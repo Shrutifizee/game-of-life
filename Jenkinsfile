@@ -37,7 +37,7 @@ pipeline
 				junit allowEmptyResults: true, testResults: '**/*.xml'
 			}
 		}
-		stage ('Sonar Analysis')
+		/*stage ('Sonar Analysis')
 		{
 			steps
 			{
@@ -46,7 +46,7 @@ pipeline
 					sh "mvn sonar:sonar"
 				}
 			}
-		}
+		}*/
 		stage ('Upload to Artifactory')
 		{
 			steps
@@ -67,7 +67,7 @@ pipeline
                 )
 			}
 		}
-		stage ('Docker Image')
+		/*stage ('Docker Image')
 		{
 			steps
 			{
@@ -102,13 +102,6 @@ pipeline
 		    {
 		        sh 'docker run --name devopssampleapplication_shrutigupta -d -p 7000:8080 docker.io/shrutifizeegupta/assignment:${BUILD_NUMBER}'
 		    }
-		}
+		}*/
 	}
-	post 
-	{
-        always 
-		{
-			emailext attachmentsPattern: 'report.html', body: '${JELLY_SCRIPT,template="health"}', mimeType: 'text/html', recipientProviders: [[$class: 'RequesterRecipientProvider']], replyTo: 'shruti.gupta@nagarro.com', subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', to: 'shruti.gupta@nagarro.com'
-        }
-    }
 }
