@@ -1,107 +1,72 @@
 pipeline
 {
-    agent any
-	tools
+	agent any
+	stages
 	{
-		maven 'Maven'
-	}
-	options
-    {
-        timestamps()
-        timeout(time: 1, unit: 'HOURS')
-        skipDefaultCheckout()
-        buildDiscarder(logRotator(daysToKeepStr: '10', numToKeepStr: '10'))
-	      disableConcurrentBuilds()
-    }
-    stages
-    {
-	    stage ('checkout')
+		stage ('checkout')
 		{
 			steps
 			{
-				checkout scm
+				sh "echo hello"
 			}
 		}
 		stage ('Build')
 		{
 			steps
 			{
-				sh "mvn clean install"
+				sh "echo hello"
 			}
 		}
-		stage ('Unit Testing')
+		stage ('Sonar Analysis')
 		{
 			steps
 			{
-				sh "mvn test"
-				junit allowEmptyResults: true, testResults: '**/*.xml'
+				sh "echo hello"
 			}
 		}
-		/*stage ('Sonar Analysis')
-		{
-			steps
-			{
-				withSonarQubeEnv("Sonar") 
-				{
-					sh "mvn sonar:sonar"
-				}
-			}
-		}*/
 		stage ('Upload to Artifactory')
 		{
 			steps
 			{
-				rtMavenDeployer (
-                    id: 'deployer',
-                    serverId: 'Artifactory',
-                    releaseRepo: 'shruti',
-                    snapshotRepo: 'shruti'
-                )
-                rtMavenRun (
-                    pom: 'pom.xml',
-                    goals: 'clean install',
-                    deployerId: 'deployer',
-                )
-                rtPublishBuildInfo (
-                    serverId: 'Artifactory',
-                )
+				sh "echo hello"
 			}
 		}
-		/*stage ('Docker Image')
+		stage ('Docker Image')
 		{
 			steps
 			{
-				sh returnStdout: true, script: 'docker build -t docker.io/shrutifizeegupta/assignment:${BUILD_NUMBER} -f Dockerfile .'
+				sh "echo hello"
 			}
 		}
-		stage ('Push to DTR')
-	    {
-		    steps
-		    {
-		    	sh returnStdout: true, script: 'docker push docker.io/shrutifizeegupta/assignment:${BUILD_NUMBER}'
-		    }
-	    }
-        stage ('Stop Running container')
-    	{
-	        steps
-	        {
-	            sh '''
-                    ContainerID=$(docker ps | grep 7000 | cut -d " " -f 1)
-                    if [  $ContainerID ]
-                    then
-                        docker stop $ContainerID
-                        docker rm -f $ContainerID
-                    fi
-                '''
-	        }
-	    }
-
+		stage('Containers') 
+		{
+			steps 
+			{
+				parallel(
+					PushtoDTR: 
+					{
+						sh "echo hello"
+					},
+					PrecontainerCheck: 
+					{
+						sh "echo hello"
+					}
+				)
+			}
+		}
 		stage ('Docker deployment')
 		{
 		    steps
 		    {
-		        sh 'docker run --name devopssampleapplication_shrutigupta -d -p 7000:8080 docker.io/shrutifizeegupta/assignment:${BUILD_NUMBER}'
+		        sh "echo hello"
 		    }
-		}*/
+		}
+		stage ('Helm Chart Deployment')
+		{
+		    steps
+		    {
+		        sh "echo hello"
+		    }
+		}
 	}
 }
