@@ -3,21 +3,28 @@ pipeline
 	agent any
 	stages
 	{
-		stage ('Build')
+		stage ('nuget restore')
 		{
 			steps
 			{
 				sh "echo hello"
 			}
 		}
-		stage ('Unit Testing')
+		stage ('Start sonarqube analysis')
 		{
 			steps
 			{
 				sh "echo hello"
 			}
 		}
-		stage ('Upload to Artifactory')
+		stage ('Code build')
+		{
+			steps
+			{
+				sh "echo hello"
+			}
+		}
+		stage ('Stop sonarqube analysis')
 		{
 			steps
 			{
