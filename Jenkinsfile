@@ -3,21 +3,21 @@ pipeline
 	agent any
 	stages
 	{
-		stage ('Build')
+		stage ('nuget restore')
 		{
 			steps
 			{
 				sh "echo hello"
 			}
 		}
-		stage ('Sonar Analysis')
+		stage ('Code build')
 		{
 			steps
 			{
 				sh "echo hello"
 			}
 		}
-		stage ('Upload to Artifactory')
+		stage ('Release artifact')
 		{
 			steps
 			{
